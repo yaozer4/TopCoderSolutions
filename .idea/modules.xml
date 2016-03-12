@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JavaSandbox.iml" filepath="$PROJECT_DIR$/JavaSandbox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TopCoderSolutions.iml" filepath="$PROJECT_DIR$/TopCoderSolutions.iml" />
     </modules>
   </component>
 </project>

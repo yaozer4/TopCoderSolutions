@@ -1,4 +1,4 @@
-package com.zack.javasandbox;
+package com.zack.topcodersolutions;
 
 import java.util.Collections;
 import java.util.HashMap;

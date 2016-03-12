@@ -1,4 +1,4 @@
-package com.zack.javasandbox;
+package com.zack.topcodersolutions;
 
 /**
  * Created by wz39rg on 3/10/16.

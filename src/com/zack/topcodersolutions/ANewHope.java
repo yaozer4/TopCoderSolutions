@@ -1,4 +1,4 @@
-package com.zack.javasandbox;
+package com.zack.topcodersolutions;
 
 /* Problem Statement
 	In a galaxy far far away... each week has N days.
