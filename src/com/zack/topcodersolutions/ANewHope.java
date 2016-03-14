@@ -29,6 +29,10 @@ package com.zack.topcodersolutions;
 	Given firstWeek, lastWeek and D, compute and return the smallest number of weeks the mission could have taken.
 */
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Class Description
  * Created on   3/11/16
@@ -39,12 +43,47 @@ public class ANewHope {
 	public static final int INVALID_INPUT = -1;
 	public int count(int[] firstWeek, int[] lastWeek, int D) {
 		int daysInWeek = firstWeek.length;
+		Map<Integer, Integer> desiredPositions = new HashMap<>();
 		if (daysInWeek != lastWeek.length) {
 			return INVALID_INPUT;
 		}
-
-
-
-		return 1;
+		for (int i = 0; i < daysInWeek; i++) {
+			desiredPositions.put(lastWeek[i], i);
+		}
+		// Initialize count to be 2 since it will always be at least two weeks
+		int count = 2;
+		while (true) {
+			if (firstWeek == lastWeek) {
+				break;
+			}
+			int[] nextWeek = new int[daysInWeek];
+			Arrays.fill(nextWeek, -1);
+			for (int i = daysInWeek - 1; i >= 0; i--) {
+				int nextAvailableArrayPosition = (D + i);
+				int shirtBeingWorn = firstWeek[i];
+				if (nextAvailableArrayPosition >= daysInWeek) {
+					nextAvailableArrayPosition -= daysInWeek;
+				}
+				if (nextAvailableArrayPosition <= desiredPositions.get(shirtBeingWorn)) {
+					nextAvailableArrayPosition = desiredPositions.get(shirtBeingWorn);
+				}
+				while (true) {
+					if (nextAvailableArrayPosition >= daysInWeek) {
+						nextAvailableArrayPosition -= daysInWeek;
+					}
+					if (nextWeek[nextAvailableArrayPosition] == -1) {
+						// Put the shirt in its next available position
+						nextWeek[nextAvailableArrayPosition] = shirtBeingWorn;
+						break;
+					} else {
+						nextAvailableArrayPosition++;
+					}
+				}
+			}
+			firstWeek = nextWeek;
+			count++;
+		}
+		return count;
 	}
 }
+
