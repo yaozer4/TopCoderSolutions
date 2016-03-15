@@ -1,4 +1,4 @@
-package com.zack.topcodersolutions;
+package com.zack.topcoder.practice.solutions;
 
 /**
  * Created by wz39rg on 3/10/16.
@@ -8,6 +8,6 @@ public class JavaSandbox {
 //        ABBA abba = new ABBA();
 //		System.out.println(abba.canObtain("BBBBABABBBBBBA", "BBBBABABBABBBBBBABABBBBBBBBABAABBBAA"));
 		ANewHope aNewHope = new ANewHope();
-		System.out.println(aNewHope.count(new int[]{1, 2, 3, 4}, new int[]{4, 3, 2, 1}, 3));
+		System.out.println(aNewHope.count(new int[]{1, 2, 3, 4}, new int[]{1, 2, 3, 4}, 3));
 	}
 }

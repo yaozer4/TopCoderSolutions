@@ -1,4 +1,4 @@
-package com.zack.topcodersolutions;
+package com.zack.topcoder.practice.solutions;
 
 /* Problem Statement
 	In a galaxy far far away... each week has N days.
@@ -42,6 +42,7 @@ import java.util.Map;
 public class ANewHope {
 	public static final int INVALID_INPUT = -1;
 	public int count(int[] firstWeek, int[] lastWeek, int D) {
+		// Find our week length
 		int daysInWeek = firstWeek.length;
 		Map<Integer, Integer> desiredPositions = new HashMap<>();
 		if (daysInWeek != lastWeek.length) {
@@ -50,37 +51,52 @@ public class ANewHope {
 		for (int i = 0; i < daysInWeek; i++) {
 			desiredPositions.put(lastWeek[i], i);
 		}
-		// Initialize count to be 2 since it will always be at least two weeks
-		int count = 2;
+		// Initialize count to be 1 since it will have to be at least one week
+		int count = 1;
 		while (true) {
-			if (firstWeek == lastWeek) {
+			// If we found a match, then break out of the loop and return the count
+			if (Arrays.equals(firstWeek, lastWeek)) {
 				break;
 			}
+			// Create a new array with the same size as a temporary
 			int[] nextWeek = new int[daysInWeek];
+			// Fill with negative ones to differentiate
 			Arrays.fill(nextWeek, -1);
+
+			// For each day in the week work backwards
 			for (int i = daysInWeek - 1; i >= 0; i--) {
-				int nextAvailableArrayPosition = (D + i);
+				// Get the shirt value of index i
 				int shirtBeingWorn = firstWeek[i];
-				if (nextAvailableArrayPosition >= daysInWeek) {
-					nextAvailableArrayPosition -= daysInWeek;
-				}
+				// Determine if the next available usage of the shirt will be in the next week
+				int nextAvailableArrayPosition = (D + i) - daysInWeek;
+
+				// If the value of nextAvailableArrayPosition is negative we can assume that it's save to put anywhere
 				if (nextAvailableArrayPosition <= desiredPositions.get(shirtBeingWorn)) {
+					// So we'll put it where it wants to go
 					nextAvailableArrayPosition = desiredPositions.get(shirtBeingWorn);
 				}
+				// Loop to find the next available spot in the array
 				while (true) {
-					if (nextAvailableArrayPosition >= daysInWeek) {
-						nextAvailableArrayPosition -= daysInWeek;
+					// In case we've decremented too far, we'll wrap it around the week
+					if (nextAvailableArrayPosition < 0) {
+						nextAvailableArrayPosition += daysInWeek;
 					}
+
+					// If we've found a -1 that is a free spot in the array
 					if (nextWeek[nextAvailableArrayPosition] == -1) {
-						// Put the shirt in its next available position
+						// Put the shirt in either it's next available spot (if we couldn't put it where it wanted to
+						// go yet) or where it desires to go.
 						nextWeek[nextAvailableArrayPosition] = shirtBeingWorn;
 						break;
 					} else {
-						nextAvailableArrayPosition++;
+						// Decrement index in case we can't put it in that spot
+						nextAvailableArrayPosition--;
 					}
 				}
 			}
+			// Update the firstWeek to our newly created week
 			firstWeek = nextWeek;
+			// Increment the count
 			count++;
 		}
 		return count;

@@ -1,4 +1,4 @@
-package com.zack.topcodersolutions;
+package com.zack.topcoder.practice.solutions;
 
 import org.junit.Assert;
 import org.junit.Before;
