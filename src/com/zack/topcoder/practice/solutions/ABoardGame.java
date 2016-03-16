@@ -13,8 +13,8 @@ public class ABoardGame {
 	public static final String DRAW = "Draw";
 
 	public String whoWins(String[] board) {
-//		Map<Integer, Integer> aliceScoreBoard = new HashMap<>();
-//		Map<Integer, Integer> bobScoreBoard = new HashMap<>();
+
+		// Check for invalid input
 		if (board == null) {
 			return INVALID_BOARD;
 		}
@@ -26,51 +26,72 @@ public class ABoardGame {
 		int boardLength = board.length;
 		int halfwayPointY = boardLength / 2;
 
-		int[] aliceScoreBoard = new int[halfwayPointY + 1];
-		int[] bobScoreBoard = new int[halfwayPointY + 1];
+		// Initialize Bob and Alice's scoreboard that we'll use later
+		// Points can be worth up to length/2 value
+		int[] aliceScoreBoard = new int[halfwayPointY];
+		int[] bobScoreBoard = new int[halfwayPointY];
+
+		// Initialize the value of the row to be zero
 		int rowValue = 0;
 		for (int boardRow = 0; boardRow < boardLength; boardRow++) {
+			// Find the length of the particular string and make sure it's the same length as the array
 			int boardWidth = board[boardRow].length();
 			int halfwayPointX = board[boardRow].length() / 2;
 			if (boardLength != boardWidth) {
 				return INVALID_BOARD;
 			}
+
+			// If the row we're on is greater than half of the Array Length, then we need to decrement the value of it
+			if (boardRow > halfwayPointY) {
+				rowValue--;
+			}
+
+			// Get the string associated with the row
 			String row = board[boardRow];
-			int columnValue = 1;
+
+			// Initialize Column value to be zero
+			int columnValue = 0;
 			for (int boardColumn = 0; boardColumn < board[boardRow].length(); boardColumn++) {
+				// Get the first char of the String at row "boardRow"
 				char column = row.charAt(boardColumn);
 
+				// If the column index is greater than half of the String length, we'll decrement it
+				// e.g. if boardColumn = 3 and halfwayPointX = 2 (row length of 4) then we'll want to decrement our
+				// column value to reflect the correct position according to the board.
+				if (boardColumn > halfwayPointX) {
+					columnValue--;
+				}
+
+				// Check what value we actually found.
 				switch (column) {
 					case 'A':
-						//Alice point based off of column and row
+						// Alice point based off of column and row
+						// Get the lowest value of either column or row and use that
 						int totalValueAlice = (rowValue <= columnValue) ? rowValue : columnValue;
-//						aliceScoreBoard.put(totalValueAlice, aliceScoreBoard.get(totalValueAlice) == null ? 0 : aliceScoreBoard.get(totalValueAlice) + 1);
 						aliceScoreBoard[totalValueAlice] += 1;
 						break;
 					case 'B':
+						// Bob point based off of column and row
+						// Get the lowest value of either column or row and use that
 						int totalValueBob = (rowValue <= columnValue) ? rowValue : columnValue;
-//						bobScoreBoard.put(totalValueBob, bobScoreBoard.get(totalValueBob) == null ? 0 : bobScoreBoard.get(totalValueBob) + 1);
-						//Bob point based off of column and row
 						bobScoreBoard[totalValueBob] += 1;
 						break;
 					case '.':
 						break;
 				}
-				// Increment or decrement point value of the column value depending on where it is
-				if (boardColumn < halfwayPointX) {
+				// Increment column value if we haven't reached the halfway point yet
+				if (boardColumn < halfwayPointX - 1) {
 					columnValue++;
-				} else if (boardColumn > halfwayPointX) {
-					columnValue--;
 				}
 			}
-			// Increment or decrement point value of the row depending on where it is
-			if (boardRow < halfwayPointY) {
+			// Increment row value if we haven't reached the halfway point yet
+			if (boardRow < halfwayPointY - 1) {
 				rowValue++;
-			} else if (boardRow > halfwayPointY) {
-				rowValue--;
 			}
 		}
-		for (int bestPointValue = halfwayPointY - 1; bestPointValue >= 0; bestPointValue++) {
+
+		// Iterate through the scoreboards from the end (highest) to find a tie breaker as quick as possible
+		for (int bestPointValue = halfwayPointY - 1; bestPointValue >= 0; bestPointValue--) {
 			if (aliceScoreBoard[bestPointValue] == bobScoreBoard[bestPointValue]) {
 				continue;
 			} else if (aliceScoreBoard[bestPointValue] > bobScoreBoard[bestPointValue]) {
